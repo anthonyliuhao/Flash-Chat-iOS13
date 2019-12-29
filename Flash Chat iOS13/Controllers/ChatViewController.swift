@@ -21,7 +21,7 @@ class ChatViewController: UIViewController {
         navigationItem.hidesBackButton = true
         
         // Add a title to this screen
-        title = "⚡️FlashChat"
+        title = K.appName
         
     }
     
