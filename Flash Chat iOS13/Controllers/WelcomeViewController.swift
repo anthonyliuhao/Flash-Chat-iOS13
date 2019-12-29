@@ -7,25 +7,17 @@
 //
 
 import UIKit
+import CLTypingLabel
 
 class WelcomeViewController: UIViewController {
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: CLTypingLabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = ""
-        let titleText = "⚡️FlashChat"
         
-        // You can't subscript a string, so work around it by converting it to an array
-        let titleCharArray = Array(titleText)
-        
-        // As each timer starts at the same time, subsequent timers need to wait longer to fire off
-        for index in 0..<titleCharArray.count {
-            Timer.scheduledTimer(withTimeInterval: 0.1 * Double(index), repeats: false) { (timer) in
-                self.titleLabel.text?.append(titleCharArray[index])
-            }
-        }
+        titleLabel.text = "⚡️FlashChat"
+
     }
     
     
