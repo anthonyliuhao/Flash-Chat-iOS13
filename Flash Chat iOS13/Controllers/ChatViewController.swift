@@ -17,6 +17,7 @@ class ChatViewController: UIViewController {
         Message(sender: "one@two.com", body: "Hey!"),
         Message(sender: "three@four.com", body: "Hello!"),
         Message(sender: "one@two.com", body: "What's up!"),
+        Message(sender: "one@two.com", body: K.longAssString)
     ]
     
     override func viewDidLoad() {
@@ -30,6 +31,9 @@ class ChatViewController: UIViewController {
         
         // Add a title to this screen
         title = K.appName
+        
+        // Register the message cell xib to the table view
+        tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         
     }
     
@@ -59,8 +63,8 @@ extension ChatViewController: UITableViewDataSource {
     
     // This function asks for a cell to display in each row of the table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
-        cell.textLabel?.text = messages[indexPath.row].body
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
+        cell.label.text = messages[indexPath.row].body
         return cell
     }
     
