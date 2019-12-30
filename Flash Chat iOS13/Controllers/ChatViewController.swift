@@ -38,6 +38,43 @@ class ChatViewController: UIViewController {
         // Register the message cell xib to the table view
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         
+        loadMessages()
+    }
+    
+    func loadMessages() {
+        
+        // Clear the dummy messages
+        self.messages = []
+        
+        db.collection(K.FStore.collectionName).getDocuments { (querySnapshot, error) in
+            if let e = error {
+                print("There was an issue retrieving data from Firestore. \(e.localizedDescription)")
+            }
+            else {
+                print("Successfully retrieving data!")
+                
+                if let snapshotDocuments = querySnapshot?.documents {
+                    for ssDoc in snapshotDocuments {
+                        
+                        let data = ssDoc.data()
+                        
+                        // Conditionally down cast as String using as?
+                        if let sender = data[K.FStore.senderField] as? String, let messageBody = data[K.FStore.bodyField] as?  String {
+                            
+                            // Create a Message object and add it to the messages array
+                            self.messages.append(Message(sender: sender, body: messageBody))
+                        }
+                    }
+                    
+                    // Trigger a reload of data from data source
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    
+                    
+                }
+            }
+        }
     }
     
     @IBAction func sendPressed(_ sender: UIButton) {
